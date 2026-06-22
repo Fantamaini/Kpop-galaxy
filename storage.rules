@@ -1,0 +1,29 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isSignedIn() && 
+             request.auth.token.admin == true;
+    }
+    
+    // Règles pour toutes les images
+    match /{allPaths=**} {
+      // Lecture publique pour afficher les images dans l'app
+      allow read: if true;
+      
+      // Écriture uniquement pour les utilisateurs connectés (en attendant auth)
+      // Temporairement permissive pour le mode TEST
+      allow write: if true; // À SÉCURISER plus tard avec isAdmin()
+      
+      // Validation des images
+      allow write: if request.resource.size < 10 * 1024 * 1024 // Max 10MB
+                   && request.resource.contentType.matches('image/.*');
+    }
+  }
+}

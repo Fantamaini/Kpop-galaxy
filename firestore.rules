@@ -1,0 +1,85 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isSignedIn() && 
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // News collection - Articles K-pop
+    match /news/{newsId} {
+      allow read: if true; // Public
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // Groups collection - Groupes K-pop
+    match /groups/{groupId} {
+      allow read: if true; // Public
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // Concerts collection
+    match /concerts/{concertId} {
+      allow read: if true; // Public
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // Media collection - Vidéos YouTube
+    match /media/{mediaId} {
+      allow read: if true; // Public
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // Quiz collection
+    match /quiz/{quizId} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // Quiz results - Scores utilisateurs
+    match /quizResults/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow write: if isOwner(userId);
+    }
+    
+    // User favorites (embedded or legacy)
+    match /favorites/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Allow users to update their own xp, badges, stats, quizHistory, biases (gamification)
+    // (Full user doc updates restricted to self + admin already)
+    
+    // Events - Agenda
+    match /events/{eventId} {
+      allow read: if true; // Public
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // Comments - Commentaires (future feature)
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create: if isSignedIn();
+      allow update, delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+  }
+}
