@@ -1,8 +1,8 @@
-# K-POP GALAXY 🌟
+# K-POP GALAXY 
 
 Application mobile cross-platform pour les fans de K-pop, développée avec React Native et Expo.
 
-## 📱 Fonctionnalités
+##  Fonctionnalités
 
 - **Authentification** : Connexion sécurisée via Firebase (Email, Google, Apple)
 - **News Feed** : Actualités K-pop en temps réel
@@ -15,7 +15,7 @@ Application mobile cross-platform pour les fans de K-pop, développée avec Reac
 - **Notifications** : Alertes pour les événements importants
 - **Mode Sombre** : Interface adaptable
 
-## 🚀 Installation
+## Installation
 
 ### Prérequis
 
@@ -60,7 +60,7 @@ npm start
 expo start
 ```
 
-## 📁 Structure du Projet
+## Structure du Projet
 
 ```
 kpop-galaxy/
@@ -79,7 +79,7 @@ kpop-galaxy/
 └── package.json        # Dépendances
 ```
 
-## 🛠️ Technologies
+## Technologies
 
 - **Frontend** : React Native + Expo
 - **Navigation** : React Navigation
@@ -88,7 +88,7 @@ kpop-galaxy/
 - **APIs** : Ticketmaster, YouTube Data API v3
 - **Stockage Local** : AsyncStorage
 
-## 👥 Rôles
+## Rôles
 
 ### Utilisateur
 - Consultation des actualités et groupes
@@ -102,7 +102,7 @@ kpop-galaxy/
 - Supervision des utilisateurs
 - Analyse des statistiques
 
-## 📝 License
+## License
 
 Ce projet est développé dans le cadre d'un projet de fin d'études.
 
